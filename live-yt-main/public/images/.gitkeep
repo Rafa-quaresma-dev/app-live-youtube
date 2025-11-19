@@ -1,0 +1,16 @@
+# PROFILE IMAGE FOLDER
+#
+# EASY SETUP:
+# 1. Place your image here and name it "profile" with any extension
+#    Examples: profile.jpg, profile.png, profile.jpeg, profile.webp
+# 2. Done! The system auto-detects it
+#
+# CUSTOM NAMES:
+# - Use any filename (e.g., "avatar.png", "logo.jpg")
+# - Update profileImageUrl in src/config/livestream-config.ts
+#
+# RECOMMENDATIONS:
+# - Square format (1:1)
+# - Size: 400x400 pixels
+# - Max: 500KB
+# - Formats: JPG, JPEG, PNG, GIF, WEBP
