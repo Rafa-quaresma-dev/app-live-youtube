@@ -40,6 +40,33 @@ const extractYouTubeId = (input: string): string => {
   return input;
 };
 
+// Helper function to extract Vimeo video ID from URL or return ID directly
+const extractVimeoId = (input: string): string => {
+  if (!input) return "";
+
+  // If it's already just an ID (numbers only)
+  if (/^\d+$/.test(input)) {
+    return input;
+  }
+
+  // Try to extract from various Vimeo URL formats
+  const patterns = [
+    /vimeo\.com\/(\d+)/,                        // Standard Vimeo URL
+    /vimeo\.com\/channels\/\w+\/(\d+)/,         // Channel URL
+    /vimeo\.com\/groups\/\w+\/videos\/(\d+)/,   // Group URL
+  ];
+
+  for (const pattern of patterns) {
+    const match = input.match(pattern);
+    if (match && match[1]) {
+      return match[1];
+    }
+  }
+
+  // If no pattern matches, return the input as-is (might be an ID)
+  return input;
+};
+
 // Helper function to resolve profile image path
 const resolveProfileImage = (input: string): string => {
   if (!input) return "";
@@ -280,6 +307,52 @@ export const VideoPlayer = ({ videoId = videoConfig.videoId }: VideoPlayerProps)
         if (player && player.destroy) {
           player.destroy();
         }
+      };
+    }
+
+    // VIMEO PLAYER
+    if (videoConfig.videoType === "vimeo" && videoConfig.vimeoId) {
+      const extractedVimeoId = extractVimeoId(videoConfig.vimeoId);
+
+      // Create Vimeo player container
+      const vimeoContainer = document.createElement('div');
+      vimeoContainer.style.position = 'relative';
+      vimeoContainer.style.paddingBottom = '177.78%';
+      vimeoContainer.style.height = '0';
+      vimeoContainer.style.overflow = 'hidden';
+
+      const iframe = document.createElement('iframe');
+      iframe.src = `https://player.vimeo.com/video/${extractedVimeoId}?badge=0&autopause=0&player_id=0&app_id=58479`;
+      iframe.frameBorder = '0';
+      iframe.allow = 'autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share';
+      iframe.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
+      iframe.style.position = 'absolute';
+      iframe.style.top = '0';
+      iframe.style.left = '0';
+      iframe.style.width = '100%';
+      iframe.style.height = '100%';
+      iframe.title = 'Vimeo Player';
+
+      vimeoContainer.appendChild(iframe);
+      container.appendChild(vimeoContainer);
+
+      // Load Vimeo API script
+      if (!document.querySelector('script[src="https://player.vimeo.com/api/player.js"]')) {
+        const script = document.createElement('script');
+        script.src = 'https://player.vimeo.com/api/player.js';
+        script.async = true;
+        document.head.appendChild(script);
+      }
+
+      dropTimeout = setTimeout(() => {
+        if (!w.__VIEWER_DROP_DONE) {
+          triggerDrop();
+        }
+      }, videoConfig.viewers.dropTimeInSeconds * 1000);
+
+      return () => {
+        isInitializing.current = false;
+        if (dropTimeout) clearTimeout(dropTimeout);
       };
     }
 

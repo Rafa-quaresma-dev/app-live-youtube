@@ -11,8 +11,8 @@
 
 export const videoConfig = {
   // 🎬 VIDEO TYPE
-  // Choose: "youtube", "panda", "vturb" or "direct"
-  videoType: "youtube" as "youtube" | "panda" | "vturb" | "direct",
+  // Choose: "youtube", "vimeo", "panda", "vturb" or "direct"
+  videoType: "youtube" as "youtube" | "vimeo" | "panda" | "vturb" | "direct",
 
   // 📹 YOUTUBE: Paste the complete video URL or just the video ID
   // Examples:
@@ -21,6 +21,12 @@ export const videoConfig = {
   //   Shorts: "https://www.youtube.com/shorts/VsWdwMfr6A0"
   //   Just ID: "TkRmrPQDPFw"
   videoId: "https://www.youtube.com/shorts/VsWdwMfr6A0",
+
+  // 🎬 VIMEO: Paste the complete video URL or just the video ID
+  // Examples:
+  //   Full URL: "https://vimeo.com/1138111783"
+  //   Just ID: "1138111783"
+  vimeoId: "",
 
   // 🐼 PANDA VIDEO: Paste the complete embed code provided by Panda Video
   // Example: <div style="position:relative;padding-top:75%;"><iframe id="panda-xxxxx"...></iframe></div>
