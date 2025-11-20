@@ -40,33 +40,6 @@ const extractYouTubeId = (input: string): string => {
   return input;
 };
 
-// Helper function to extract Vimeo video ID from URL or return ID directly
-const extractVimeoId = (input: string): string => {
-  if (!input) return "";
-
-  // If it's already just an ID (numbers only)
-  if (/^\d+$/.test(input)) {
-    return input;
-  }
-
-  // Try to extract from various Vimeo URL formats
-  const patterns = [
-    /vimeo\.com\/(\d+)/,                        // Standard Vimeo URL
-    /vimeo\.com\/channels\/\w+\/(\d+)/,         // Channel URL
-    /vimeo\.com\/groups\/\w+\/videos\/(\d+)/,   // Group URL
-  ];
-
-  for (const pattern of patterns) {
-    const match = input.match(pattern);
-    if (match && match[1]) {
-      return match[1];
-    }
-  }
-
-  // If no pattern matches, return the input as-is (might be an ID)
-  return input;
-};
-
 // Helper function to resolve profile image path
 const resolveProfileImage = (input: string): string => {
   if (!input) return "";
@@ -311,38 +284,35 @@ export const VideoPlayer = ({ videoId = videoConfig.videoId }: VideoPlayerProps)
     }
 
     // VIMEO PLAYER
-    if (videoConfig.videoType === "vimeo" && videoConfig.vimeoId) {
-      const extractedVimeoId = extractVimeoId(videoConfig.vimeoId);
+    if (videoConfig.videoType === "vimeo" && videoConfig.vimeoEmbedCode) {
+      // Create a temporary wrapper div to process the HTML
+      const tempDiv = document.createElement('div');
+      tempDiv.innerHTML = videoConfig.vimeoEmbedCode;
 
-      // Create Vimeo player container
-      const vimeoContainer = document.createElement('div');
-      vimeoContainer.style.position = 'relative';
-      vimeoContainer.style.paddingBottom = '177.78%';
-      vimeoContainer.style.height = '0';
-      vimeoContainer.style.overflow = 'hidden';
+      // Separate scripts from HTML
+      const htmlElements = Array.from(tempDiv.children).filter(el => el.tagName !== 'SCRIPT');
+      const scriptElements = tempDiv.querySelectorAll('script');
 
-      const iframe = document.createElement('iframe');
-      iframe.src = `https://player.vimeo.com/video/${extractedVimeoId}?badge=0&autopause=0&player_id=0&app_id=58479`;
-      iframe.frameBorder = '0';
-      iframe.allow = 'autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share';
-      iframe.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
-      iframe.style.position = 'absolute';
-      iframe.style.top = '0';
-      iframe.style.left = '0';
-      iframe.style.width = '100%';
-      iframe.style.height = '100%';
-      iframe.title = 'Vimeo Player';
+      // Add HTML elements first
+      htmlElements.forEach(el => container.appendChild(el));
 
-      vimeoContainer.appendChild(iframe);
-      container.appendChild(vimeoContainer);
+      // Execute scripts after (to ensure DOM is ready)
+      scriptElements.forEach((oldScript) => {
+        const newScript = document.createElement('script');
 
-      // Load Vimeo API script
-      if (!document.querySelector('script[src="https://player.vimeo.com/api/player.js"]')) {
-        const script = document.createElement('script');
-        script.src = 'https://player.vimeo.com/api/player.js';
-        script.async = true;
-        document.head.appendChild(script);
-      }
+        // Copy attributes (src, async, defer, etc)
+        Array.from(oldScript.attributes).forEach(attr => {
+          newScript.setAttribute(attr.name, attr.value);
+        });
+
+        // Copy inline content
+        if (oldScript.textContent) {
+          newScript.textContent = oldScript.textContent;
+        }
+
+        // Add to container to execute
+        container.appendChild(newScript);
+      });
 
       dropTimeout = setTimeout(() => {
         if (!w.__VIEWER_DROP_DONE) {
@@ -353,6 +323,7 @@ export const VideoPlayer = ({ videoId = videoConfig.videoId }: VideoPlayerProps)
       return () => {
         isInitializing.current = false;
         if (dropTimeout) clearTimeout(dropTimeout);
+        container.innerHTML = '';
       };
     }
 
