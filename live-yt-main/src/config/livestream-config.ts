@@ -165,6 +165,46 @@ export const chatConfig = {
 };
 
 // ═══════════════════════════════════════════════════════════════
+// 📊 PIXELS TRACKING CONFIGURATION
+// ═══════════════════════════════════════════════════════════════
+
+/**
+ * 💡 HOW TO ADD YOUR PIXELS:
+ *
+ * 1. Go to your platform (Facebook, TikTok, Google Analytics)
+ * 2. Get the pixel/tracking code
+ * 3. Copy the ENTIRE script block (including <script> tags)
+ * 4. Paste it in the corresponding field below using backticks (`)
+ * 5. Leave empty "" if you don't use that platform
+ *
+ * EXAMPLE for Facebook:
+ * facebookPixel: `<!-- Meta Pixel Code -->
+ * <script>
+ * !function(f,b,e,v,n,t,s)
+ * {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+ * ... (rest of your script)
+ * </script>
+ * <!-- End Meta Pixel Code -->`
+ */
+
+export const pixelsConfig = {
+  // 🔵 FACEBOOK PIXEL
+  // Paste your complete Facebook pixel script here (use backticks)
+  // Leave empty "" if you don't have one
+  facebookPixel: ``,
+
+  // 🎵 TIKTOK PIXEL
+  // Paste your complete TikTok pixel script here (use backticks)
+  // Leave empty "" if you don't have one
+  tiktokPixel: ``,
+
+  // 🔴 GOOGLE ANALYTICS
+  // Paste your complete Google Analytics script here (use backticks)
+  // Leave empty "" if you don't have one
+  googleAnalyticsPixel: ``,
+};
+
+// ═══════════════════════════════════════════════════════════════
 // 📝 CHAT COMMENTS (SIMPLE LIST WITH TIMING)
 // ═══════════════════════════════════════════════════════════════
 
