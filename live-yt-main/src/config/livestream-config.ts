@@ -24,15 +24,15 @@ export const videoConfig = {
 
   // 🎬 VIMEO: Paste the complete embed code provided by Vimeo
   // Just replace the video ID (1138111783) with your own Vimeo video ID
-  vimeoEmbedCode: '<div style="padding:177.78% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1138111783?badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="Vimeo video"></iframe></div><script src="https://player.vimeo.com/api/player.js"><\/script>',
+  vimeoEmbedCode: '',
 
   // 🐼 PANDA VIDEO: Paste the complete embed code provided by Panda Video
   // Example: <div style="position:relative;padding-top:75%;"><iframe id="panda-xxxxx"...></iframe></div>
-  pandaEmbedCode: "",
+  pandaEmbedCode: '',
 
   // 📺 VTURB: Paste the entire script provided by Vturb
   // Example: <div id="vid_xxxxxxxxx" style="..."></div><script...></script>
-  vturbScript: "",
+  vturbScript: '',
 
   // 🔗 DIRECT LINK: Paste a direct link to your video file
   // Example: https://s3.planilhinha.cloud/1_original.mp4
